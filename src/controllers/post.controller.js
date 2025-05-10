@@ -2,6 +2,29 @@ import Post from "../models/post.model.js";
 import { postSchema } from "../validations/post.validation.js";
 import { uploadToCloudinary } from "../utils/cloudinary.utils.js";
 
+export const postFeed = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+
+  try {
+    const skip = (page - 1) * limit;
+
+    const posts = await Post.find().sort({ createdAt: -1 }).skip(skip).limit(limit).populate("user", "firstName lastName");
+
+    const totalPosts = await Post.countDocuments();
+    const totalPages = Math.ceil(totalPosts / limit);
+
+    res.status(200).json({
+      currentPage: page,
+      totalPages,
+      totalPosts,
+      posts,
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
+
 export const createPost = async (req, res) => {
   const { title, content } = req.body;
 
