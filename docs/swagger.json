@@ -9,6 +9,10 @@
     {
       "description": "Local Dev Server",
       "url": "http://localhost:5500/api"
+    },
+    {
+      "description": "Production Server",
+      "url": "https://reschool-backend.onrender.com/api"
     }
   ],
   "tags": [

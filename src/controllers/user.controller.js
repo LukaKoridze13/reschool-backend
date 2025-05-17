@@ -93,6 +93,7 @@ export const loginUser = async (req, res) => {
 
     res.status(200).json({ token, refreshToken });
   } catch (err) {
+    console.log(err)
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
